@@ -1,5 +1,5 @@
 :root {
-  --black: #22292f;
+  --black: #161b1f;
   --dark-grey: #3d4852;
   --white: #ffffff;
 }
@@ -43,5 +43,5 @@ body {
   margin: 0 auto;
   max-width: 1200px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
