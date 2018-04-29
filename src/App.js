@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import "./App.css";
-import Movie from "./components/Movie";
+import Input from "./components/Input";
+import { MovieList } from "./components/MovieList";
 
 class App extends Component {
   constructor() {
@@ -16,13 +17,11 @@ class App extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
-    // this.capitalizeFirstLetter = this.capitalizeFirstLetter.bind(this);
     this.getMovies = this.getMovies.bind(this);
   }
 
   handleChange(e) {
     let input = e.target.value;
-    // let searchTerm = _.startCase(_.camelCase(input));
     this.setState({ searchTerm: input.toLowerCase() });
   }
 
@@ -51,13 +50,14 @@ class App extends Component {
     } else {
       url = `${base_url}${search}${api_key}${query}`;
     }
+    this.fetchData(url);
+  }
 
+  fetchData(url) {
     fetch(url)
       .then(res => res.json())
       .then(json => {
-        // console.log(json)
         let data = json.results;
-        // console.log(data);
         let movies = data.map(movie => {
           return {
             title: movie.original_title,
@@ -70,42 +70,24 @@ class App extends Component {
             genres: movie.genre_ids,
             isActive: false
           };
-          // return myMovie;
         });
-        // console.log(movies);
         this.setState(prevState => ({
           movies: [...prevState.movies, ...movies]
         }));
       });
   }
+
   render() {
     return (
       <div className="App">
         <h1>{this.state.title}</h1>
         <h2>{this.state.subtitle}</h2>
-        <input
-          id="main-input"
-          type="text"
-          // placeholder="Search for any movie or category"
-          value={this.state.searchTerm}
-          onChange={this.handleChange}
+        <Input
+          getMovies={this.getMovies}
+          handleChange={this.handleChange}
+          searchTerm={this.state.searchTerm}
         />
-        <button id="search-btn" onClick={this.getMovies}>
-          Find movies!
-        </button>
-        <div className="movie-container">
-          {this.state.movies.map((movie, idx) => {
-            // return (
-            //   <div key={idx}>
-            //     <h3>{movie.title}</h3>
-            //     <img src={movie.poster} alt="" />
-            //   </div>
-            // );
-            return <Movie key={idx} movie={movie} />;
-          })}
-        </div>
-        {/* <h4>{this.state.movie.title}</h4> */}
-        {/* <Movie movie={this.state.movie} /> */}
+        <MovieList movies={this.state.movies} />
       </div>
     );
   }
@@ -121,8 +103,6 @@ class App extends Component {
     fetch(genreUrl)
       .then(res => res.json())
       .then(json => {
-        // console.log(json);
-        // json.genres.forEach(genre => console.log(genre));
         this.setState(prevState => ({
           genres: [...prevState.genres, ...json.genres]
         }));
