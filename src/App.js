@@ -3,17 +3,17 @@ import _ from "lodash";
 import "./App.css";
 import Input from "./components/Input";
 import { MovieList } from "./components/MovieList";
+import { FocusedMovie } from "./components/FocusedMovie";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      title: "Awesomovie",
-      subtitle: "The quickest and easiest way to browse your favourite movies",
       searchTerm: "action",
       loadingMovies: false,
       movies: [],
-      genres: []
+      genres: [],
+      focusedMovie: undefined
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
@@ -35,7 +35,7 @@ class App extends Component {
       if (genre.name.toLowerCase() === this.state.searchTerm) {
         findByGenre = true;
         genre_id = genre.id;
-        console.log(genre_id);
+        // console.log(genre_id);
       }
     });
     const api_key = "api_key=394ba4836fb2f67bf883e42b3463c4d9";
@@ -80,8 +80,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>{this.state.title}</h1>
-        <h2>{this.state.subtitle}</h2>
+        <h1>Awesomovie</h1>
+        <h2>The quickest and easiest way to browse your favourite movies</h2>
         <Input
           getMovies={this.getMovies}
           handleChange={this.handleChange}
@@ -106,7 +106,7 @@ class App extends Component {
         this.setState(prevState => ({
           genres: [...prevState.genres, ...json.genres]
         }));
-        console.log(this.state.genres);
+        // console.log(this.state.genres);
       });
     this.getMovies();
   }

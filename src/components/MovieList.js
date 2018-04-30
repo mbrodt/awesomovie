@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import Movie from "./Movie";
+import { FocusedMovie } from "./FocusedMovie";
 
 export class MovieList extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="movie-container">
