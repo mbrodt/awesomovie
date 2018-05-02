@@ -14,15 +14,49 @@
 
 .focused-movie {
   display: flex;
-  width: 700px;
-  height: 500px;
+  max-width: 700px;
+  /* height: 500px; */
   background-color: white;
+
   color: var(--black);
 }
 
-@media screen and (max-width: 600px) {
+.focused-movie img {
+  object-fit: cover;
+}
+
+.focused-content {
+  /* border: 5px solid goldenrod; */
+  margin: 20px;
+  text-align: left;
+}
+
+.focused-content h2 {
+}
+
+.genres {
+  /* display: flex;
+  flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 10px;
+}
+
+.genre-card {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  box-shadow: 0 8px 40px -4px rgba(0, 0, 0, 0.5);
+  margin: 0 0.5rem;
+  padding: 10px;
+  border: none;
+  /* margin-bottom: 1rem; */
+  border: 1px solid black;
+}
+
+@media screen and (max-width: 700px) {
   .focused-movie {
     max-width: 80%;
     flex-direction: column;
+    overflow: auto;
   }
 }

@@ -1,0 +1,80 @@
+.main-container {
+  margin-top: 100px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.box {
+  /* max-width: 400px; */
+  margin: 0 auto;
+  padding: 0px;
+  margin: 0px;
+  /* background-color: #3d4852; */
+  background: #44a08d; /* fallback for old browsers */
+  background: linear-gradient(
+    to right,
+    #093637,
+    #44a08d
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  box-shadow: 0px 1px 30px black;
+  /* position: relative; */
+  /* overflow: hidden; */
+  margin: 10px;
+}
+/* .box::before {
+  display: inline-block;
+  opacity: 0.8;
+  content: "";
+  height: 800px;
+  width: 200%;
+  background: url("../bubbles.svg") no-repeat;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100px;
+  position: absolute;
+  background-position: center;
+  background-size: contain;
+} */
+#main-input {
+  width: 300px;
+  height: 40px;
+  font-size: 20px;
+  padding: 0.8rem 1rem !important;
+  background: rgba(0, 10, 25, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.3);
+  font-weight: 300;
+  color: #e6eaf0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-top: 30px;
+}
+#main-input:hover {
+  box-shadow: 0 10px 30px -2px rgba(0, 0, 0, 0.3);
+  z-index: 0;
+}
+#main-input:focus {
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+}
+#search-btn {
+  margin: 30px auto;
+  display: block;
+  font-size: 1.2rem;
+  border-radius: 9999px;
+  padding: 20px 30px;
+  border: none;
+  transition: all 0.2s;
+  background-color: rgba(0, 10, 25, 0.5);
+  color: #61efa7;
+  text-transform: uppercase;
+  font-weight: 500;
+  box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.3);
+}
+#search-btn:hover {
+  transform: translateY(-1px);
+}

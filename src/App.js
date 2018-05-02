@@ -22,7 +22,9 @@ class App extends Component {
 
   handleChange(e) {
     let input = e.target.value;
-    this.setState({ searchTerm: input.toLowerCase() });
+    this.setState({
+      searchTerm: input.toLowerCase()
+    });
   }
 
   getMovies() {
@@ -58,7 +60,13 @@ class App extends Component {
       .then(res => res.json())
       .then(json => {
         let data = json.results;
+        // We map over each movie object in the returned data array to only contain the data we want to use.
         let movies = data.map(movie => {
+          //The genres for each movie is given as an id, but we want the string name of the genre, which is stored in state. So we map each genreId for each movie to their corresponding name in state by using "find" to match the IDs.
+          let genres = movie.genre_ids.map(genreId => {
+            let genre = this.state.genres.find(genre => genre.id === genreId);
+            return genre.name;
+          });
           return {
             title: movie.original_title,
             // runtime: json.runtime,
@@ -67,7 +75,7 @@ class App extends Component {
             rating: movie.vote_average,
             posterSmall: "https://image.tmdb.org/t/p/w185" + movie.poster_path,
             posterLarge: "https://image.tmdb.org/t/p/w342" + movie.poster_path,
-            genres: movie.genre_ids,
+            genres: genres,
             isActive: false
           };
         });
@@ -75,19 +83,18 @@ class App extends Component {
           movies: [...prevState.movies, ...movies]
         }));
       });
+    console.log(this.state.movies);
   }
 
   render() {
     return (
       <div className="App">
-        <h1>Awesomovie</h1>
-        <h2>The quickest and easiest way to browse your favourite movies</h2>
         <Input
           getMovies={this.getMovies}
           handleChange={this.handleChange}
           searchTerm={this.state.searchTerm}
-        />
-        <MovieList movies={this.state.movies} />
+        />{" "}
+        <MovieList movies={this.state.movies} genres={this.state.genres} />{" "}
       </div>
     );
   }
@@ -106,7 +113,7 @@ class App extends Component {
         this.setState(prevState => ({
           genres: [...prevState.genres, ...json.genres]
         }));
-        // console.log(this.state.genres);
+        console.log(this.state.genres);
       });
     this.getMovies();
   }

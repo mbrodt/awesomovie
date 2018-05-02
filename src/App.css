@@ -2,11 +2,21 @@
   --black: #161b1f;
   --dark-grey: #3d4852;
   --white: #ffffff;
+  --off-white: #f4f4f5;
 }
 
 body {
   background-color: var(--black);
-  color: var(--white);
+  color: var(--off-white);
+  font-family: "Avenir", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+  /* margin: 10px; */
 }
 
 .App {
@@ -15,33 +25,13 @@ body {
   text-align: center;
 }
 
-#main-input {
-  width: 300px;
-  height: 40px;
-  font-size: 20px;
-  padding: 5px 10px;
-}
-
-#search-btn {
-  margin: 0 auto;
-  display: block;
-  font-size: 1rem;
-  margin-top: 30px;
-  background-color: var(--white);
-  color: var(--black);
-  border-radius: 9999px;
-  padding: 10px 20px;
-  border: none;
-  transition: all 0.2s;
-}
-
-#search-btn:hover {
-  transform: translateY(-1px);
-}
-
 .movie-container {
   margin: 0 auto;
   max-width: 1200px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-top: 50px;
+  padding-top: 35px;
+  border-top: 2px solid #61efa7;
+  grid-row-gap: 10px;
 }
