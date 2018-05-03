@@ -78,3 +78,7 @@
 #search-btn:hover {
   transform: translateY(-1px);
 }
+.watchlist ul {
+  list-style: none;
+  padding: 0;
+}

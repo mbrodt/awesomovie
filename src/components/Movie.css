@@ -26,12 +26,16 @@
 }
 
 .focused-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   /* border: 5px solid goldenrod; */
   margin: 20px;
   text-align: left;
 }
 
 .focused-content h2 {
+  margin: 0;
 }
 
 .genres {
@@ -40,6 +44,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-row-gap: 10px;
+  margin-bottom: 1rem;
 }
 
 .genre-card {
@@ -53,10 +58,22 @@
   border: 1px solid black;
 }
 
+.watchlist-btn {
+  background-color: #2a8067;
+  width: 100%;
+  border-radius: 5000px;
+  padding: 10px;
+  border: none;
+  color: white;
+  /* margin: 10px 5px; */
+  /* margin-top: 30px; */
+}
+
 @media screen and (max-width: 700px) {
   .focused-movie {
     max-width: 80%;
+    height: 500px;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
   }
 }

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import _ from "lodash";
+// import _ from "lodash";
 import "./App.css";
-import Input from "./components/Input";
-import { MovieList } from "./components/MovieList";
-import { FocusedMovie } from "./components/FocusedMovie";
+import Header from "./components/Header";
+import Movie from "./components/Movie";
 
 class App extends Component {
   constructor() {
@@ -13,10 +12,13 @@ class App extends Component {
       loadingMovies: false,
       movies: [],
       genres: [],
-      focusedMovie: undefined
+      watchlist: [],
+      errorState: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
+    this.updateWatchlist = this.updateWatchlist.bind(this);
+    this.removeFromWatchList = this.removeFromWatchList.bind(this);
     this.getMovies = this.getMovies.bind(this);
   }
 
@@ -27,7 +29,51 @@ class App extends Component {
     });
   }
 
+  updateWatchlist(movie) {
+    this.setState(prevState => ({
+      watchlist: [...prevState.watchlist, movie]
+    }));
+  }
+
+  removeFromWatchList(movie) {
+    let arr = [...this.state.watchlist];
+    let index = arr.indexOf(movie);
+    arr.splice(index, 1);
+    this.setState({
+      watchlist: arr
+    });
+  }
+
+  // handleSpeech() {
+  //   var recognition = new webkitSpeechRecognition();
+  //   recognition.addEventListener("result", this.speechToText);
+  //   recognition.addEventListener("end", recognition.start);
+  //   recognition.interimResults = true; // save the recorded words while talking
+  //   recognition.start();
+  // }
+
+  // speechToText(e) {
+  //   const transcript = Array.from(e.results)
+  //     .map(result => result[0])
+  //     .map(result => result.transcript)
+  //     .join("");
+  //   console.log(transcript);
+  //   // if (e.results[0].isFinal) {
+  //   //   speechOutput.appendChild(p);
+  //   // }
+  //   console.log(transcript);
+  // }
+
   getMovies() {
+    this.setState({
+      errorState: false
+    });
+    if (this.state.searchTerm === "") {
+      this.setState({
+        errorState: true
+      });
+      return;
+    }
     this.setState({
       movies: []
     });
@@ -76,7 +122,8 @@ class App extends Component {
             posterSmall: "https://image.tmdb.org/t/p/w185" + movie.poster_path,
             posterLarge: "https://image.tmdb.org/t/p/w342" + movie.poster_path,
             genres: genres,
-            isActive: false
+            isActive: false,
+            onWatchlist: false
           };
         });
         this.setState(prevState => ({
@@ -84,17 +131,37 @@ class App extends Component {
         }));
       });
     console.log(this.state.movies);
+    this.setState({
+      searchTerm: ""
+    });
   }
 
   render() {
+    let error = this.state.errorState ? (
+      <h1>Please search for a movie!</h1>
+    ) : (
+      <div className="movie-container">
+        {this.state.movies.map((movie, idx) => {
+          return (
+            <Movie
+              key={idx}
+              movie={movie}
+              updateWatchlist={this.updateWatchlist}
+            />
+          );
+        })}
+      </div>
+    );
     return (
       <div className="App">
-        <Input
+        <Header
           getMovies={this.getMovies}
           handleChange={this.handleChange}
           searchTerm={this.state.searchTerm}
+          watchlist={this.state.watchlist}
+          removewatch={this.removeFromWatchList}
         />{" "}
-        <MovieList movies={this.state.movies} genres={this.state.genres} />{" "}
+        {error}
       </div>
     );
   }

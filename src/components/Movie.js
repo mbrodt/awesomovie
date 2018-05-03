@@ -6,9 +6,11 @@ class Movie extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isActive: props.movie.isActive
+      isActive: props.movie.isActive,
+      onWatchlist: props.movie.onWatchlist
     };
     this.toggleFocus = this.toggleFocus.bind(this);
+    this.addToWatchlist = this.addToWatchlist.bind(this);
   }
   toggleFocus() {
     // console.log(this.props.movie);
@@ -18,11 +20,19 @@ class Movie extends Component {
     console.log(this.state);
   }
 
+  addToWatchlist() {
+    this.setState({
+      onWatchlist: true
+    });
+    this.props.updateWatchlist(this.props.movie);
+  }
+
   render() {
     let focused = this.state.isActive ? (
       <FocusedMovie
         movie={this.props.movie}
         toggleFocus={this.toggleFocus.bind(this)}
+        addToWatchlist={this.addToWatchlist.bind(this)}
       />
     ) : (
       <div /> //TODO: better way to do this
