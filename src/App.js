@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Movie from "./components/Movie";
+import { WatchList } from "./components/WatchList";
 
 class App extends Component {
   constructor() {
@@ -17,9 +18,9 @@ class App extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
-    this.updateWatchlist = this.updateWatchlist.bind(this);
     this.removeFromWatchList = this.removeFromWatchList.bind(this);
     this.getMovies = this.getMovies.bind(this);
+    this.addToWatchList = this.addToWatchList.bind(this);
   }
 
   handleChange(e) {
@@ -29,7 +30,7 @@ class App extends Component {
     });
   }
 
-  updateWatchlist(movie) {
+  addToWatchList(movie) {
     this.setState(prevState => ({
       watchlist: [...prevState.watchlist, movie]
     }));
@@ -44,60 +45,50 @@ class App extends Component {
     });
   }
 
-  // handleSpeech() {
-  //   var recognition = new webkitSpeechRecognition();
-  //   recognition.addEventListener("result", this.speechToText);
-  //   recognition.addEventListener("end", recognition.start);
-  //   recognition.interimResults = true; // save the recorded words while talking
-  //   recognition.start();
-  // }
-
-  // speechToText(e) {
-  //   const transcript = Array.from(e.results)
-  //     .map(result => result[0])
-  //     .map(result => result.transcript)
-  //     .join("");
-  //   console.log(transcript);
-  //   // if (e.results[0].isFinal) {
-  //   //   speechOutput.appendChild(p);
-  //   // }
-  //   console.log(transcript);
-  // }
-
-  getMovies() {
+  resetState() {
     this.setState({
-      errorState: false
+      errorState: false,
+      movies: []
     });
     if (this.state.searchTerm === "") {
       this.setState({
         errorState: true
       });
-      return;
     }
-    this.setState({
-      movies: []
-    });
+  }
+
+  searchByGenre() {
     let genre_id = "";
     let findByGenre = false;
     this.state.genres.forEach(genre => {
       if (genre.name.toLowerCase() === this.state.searchTerm) {
         findByGenre = true;
         genre_id = genre.id;
-        // console.log(genre_id);
       }
     });
+    return { findByGenre: findByGenre, genre_id: genre_id };
+  }
+
+  setupUrl() {
+    let { findByGenre, genre_id } = this.searchByGenre();
     const api_key = "api_key=394ba4836fb2f67bf883e42b3463c4d9";
     const base_url = "https://api.themoviedb.org/3/";
     const discover = "discover/movie?";
     const search = "search/movie?";
     const query = `&query=${this.state.searchTerm}`;
-    // let url = `${base_url}${search}${api_key}${query}`;
     let url = "";
     if (findByGenre) {
       url = `${base_url}${discover}${api_key}&with_genres=${genre_id}`;
     } else {
       url = `${base_url}${search}${api_key}${query}`;
     }
+    return url;
+  }
+
+  getMovies() {
+    this.resetState();
+    if (this.state.searchTerm === "") return;
+    let url = this.setupUrl();
     this.fetchData(url);
   }
 
@@ -127,14 +118,15 @@ class App extends Component {
             onWatchlist: false
           };
         });
-        this.setState(prevState => ({
-          movies: [...prevState.movies, ...movies]
-        }));
+        this.postFetchUpdateState(movies);
       });
-    console.log(this.state.movies);
-    this.setState({
+  }
+
+  postFetchUpdateState(movies) {
+    this.setState(prevState => ({
+      movies: [...prevState.movies, ...movies],
       searchTerm: ""
-    });
+    }));
   }
 
   render() {
@@ -142,36 +134,18 @@ class App extends Component {
       <h1>Please search for a movie or category</h1>
     ) : (
       <div>
-        {/* <h2>Displaying results for {this.state.searchTerm}</h2> */}
-        <div className="watchlist">
-          <h2 className="watchlist-header">Your watchlist:</h2>
-          <ul className="watchlist-content">
-            {this.state.watchlist.map(movie => {
-              console.log(movie.onWatchlist);
-              return (
-                <li
-                  className="watchlist-movie"
-                  onClick={() => {
-                    this.removeFromWatchList(movie);
-                  }}
-                >
-                  <img src={movie.posterTiny} alt="" />
-                  {/* <div>
-                    <h4>{movie.title}</h4>
-                    <p>{movie.release}</p>
-                  </div> */}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <WatchList
+          watchlist={this.state.watchlist}
+          removeFromWatchList={this.removeFromWatchList}
+        />
+
         <div className="movie-container">
           {this.state.movies.map((movie, idx) => {
             return (
               <Movie
                 key={idx}
                 movie={movie}
-                updateWatchlist={this.updateWatchlist}
+                addToWatchList={this.addToWatchList}
               />
             );
           })}

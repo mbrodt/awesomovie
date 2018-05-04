@@ -26,10 +26,7 @@ export class FocusedMovie extends Component {
                 return <div className="genre-card">{genre + " "}</div>;
               })}
             </div>
-            <button
-              className="watchlist-btn"
-              onClick={this.props.addToWatchlist}
-            >
+            <button className="watchlist-btn" onClick={this.props.addToWL}>
               Add to watchlist
             </button>
           </div>

@@ -10,29 +10,29 @@ class Movie extends Component {
       onWatchlist: props.movie.onWatchlist
     };
     this.toggleFocus = this.toggleFocus.bind(this);
-    this.addToWatchlist = this.addToWatchlist.bind(this);
+    this.addToWL = this.addToWL.bind(this);
+    // console.log("in construct ", this.props.addToWatchlist());
   }
   toggleFocus() {
     // console.log(this.props.movie);
     this.setState({
       isActive: !this.state.isActive
     });
-    console.log(this.state);
   }
 
-  addToWatchlist() {
+  addToWL() {
     this.setState({
       onWatchlist: true
     });
-    this.props.updateWatchlist(this.props.movie);
+    this.props.addToWatchList(this.props.movie);
   }
 
   render() {
     let focused = this.state.isActive ? (
       <FocusedMovie
         movie={this.props.movie}
-        toggleFocus={this.toggleFocus.bind(this)}
-        addToWatchlist={this.addToWatchlist.bind(this)}
+        toggleFocus={this.toggleFocus}
+        addToWL={this.addToWL}
       />
     ) : (
       <div /> //TODO: better way to do this
@@ -40,12 +40,7 @@ class Movie extends Component {
     return (
       <div>
         {focused} {/* //will render a focusedmovie if a movie is clicked on */}
-        <div
-          className="Movie"
-          onClick={() => {
-            this.toggleFocus();
-          }}
-        >
+        <div className="Movie" onClick={this.toggleFocus}>
           <h3>{this.props.movie.title}</h3>
           <img src={this.props.movie.posterSmall} alt="" />
         </div>
