@@ -1,0 +1,26 @@
+.watchlist-header {
+  text-align: left;
+}
+
+.watchlist {
+  margin: 0 auto;
+  max-width: 1200px;
+  /* list-style: none; */
+}
+
+.watchlist-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.watchlist ul {
+  list-style: none;
+  padding: 0;
+}
+
+.watchlist-movie {
+  margin-right: 20px;
+}
+
+@media screen and (max-width: 600px) {
+}

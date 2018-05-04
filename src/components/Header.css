@@ -6,11 +6,9 @@
 }
 
 .box {
-  /* max-width: 400px; */
   margin: 0 auto;
   padding: 0px;
   margin: 0px;
-  /* background-color: #3d4852; */
   background: #44a08d; /* fallback for old browsers */
   background: linear-gradient(
     to right,
@@ -23,20 +21,6 @@
   /* overflow: hidden; */
   margin: 10px;
 }
-/* .box::before {
-  display: inline-block;
-  opacity: 0.8;
-  content: "";
-  height: 800px;
-  width: 200%;
-  background: url("../bubbles.svg") no-repeat;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 100px;
-  position: absolute;
-  background-position: center;
-  background-size: contain;
-} */
 #main-input {
   width: 300px;
   height: 40px;
@@ -77,8 +61,4 @@
 }
 #search-btn:hover {
   transform: translateY(-1px);
-}
-.watchlist ul {
-  list-style: none;
-  padding: 0;
 }

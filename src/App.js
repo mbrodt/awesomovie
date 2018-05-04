@@ -4,6 +4,7 @@ import "./App.css";
 import Header from "./components/Header";
 import Movie from "./components/Movie";
 import { WatchList } from "./components/WatchList";
+import { MovieList } from "./components/MovieList";
 
 class App extends Component {
   constructor() {
@@ -34,6 +35,7 @@ class App extends Component {
     this.setState(prevState => ({
       watchlist: [...prevState.watchlist, movie]
     }));
+    this.saveToLocalStorage();
   }
 
   removeFromWatchList(movie) {
@@ -43,6 +45,13 @@ class App extends Component {
     this.setState({
       watchlist: arr
     });
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage() {
+    setTimeout(() => {
+      localStorage.setItem("watchlist", JSON.stringify(this.state.watchlist));
+    }, 200);
   }
 
   resetState() {
@@ -104,22 +113,26 @@ class App extends Component {
             let genre = this.state.genres.find(genre => genre.id === genreId);
             return genre.name;
           });
-          return {
-            title: movie.original_title,
-            // runtime: json.runtime,
-            description: movie.overview,
-            release: movie.release_date,
-            rating: movie.vote_average,
-            posterTiny: "https://image.tmdb.org/t/p/w92" + movie.poster_path,
-            posterSmall: "https://image.tmdb.org/t/p/w185" + movie.poster_path,
-            posterLarge: "https://image.tmdb.org/t/p/w342" + movie.poster_path,
-            genres: genres,
-            isActive: false,
-            onWatchlist: false
-          };
+          return this.createMovie(movie, genres);
         });
         this.postFetchUpdateState(movies);
       });
+  }
+
+  createMovie(movie, genres) {
+    return {
+      title: movie.original_title,
+      // runtime: json.runtime,
+      description: movie.overview,
+      release: movie.release_date,
+      rating: movie.vote_average,
+      posterTiny: "https://image.tmdb.org/t/p/w92" + movie.poster_path,
+      posterSmall: "https://image.tmdb.org/t/p/w185" + movie.poster_path,
+      posterLarge: "https://image.tmdb.org/t/p/w342" + movie.poster_path,
+      genres: genres,
+      isActive: false,
+      onWatchlist: false
+    };
   }
 
   postFetchUpdateState(movies) {
@@ -138,18 +151,10 @@ class App extends Component {
           watchlist={this.state.watchlist}
           removeFromWatchList={this.removeFromWatchList}
         />
-
-        <div className="movie-container">
-          {this.state.movies.map((movie, idx) => {
-            return (
-              <Movie
-                key={idx}
-                movie={movie}
-                addToWatchList={this.addToWatchList}
-              />
-            );
-          })}
-        </div>
+        <MovieList
+          movies={this.state.movies}
+          addToWatchList={this.addToWatchList}
+        />
       </div>
     );
     return (
@@ -170,6 +175,17 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // const cachedHits = localStorage.getItem("watchlist");
+    // if (cachedHits) {
+    //   let watchlist = JSON.parse(localStorage.getItem("watchlist"));
+    //   this.setState(prevState => ({
+    //     watchlist: [...prevState.watchlist, ...watchlist]
+    //   }));
+    // }
+    let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+    this.setState({
+      watchlist: watchlist
+    });
     const input = document.querySelector("#main-input");
     input.addEventListener("keyup", this.handleEnter);
     const genreUrl =

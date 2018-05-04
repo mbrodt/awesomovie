@@ -1,13 +1,21 @@
 import React, { Component } from "react";
+import "./WatchList.css";
 
 export class WatchList extends Component {
+  watchListHeader() {
+    let isEmpty = this.props.watchlist.length === 0;
+    return isEmpty ? (
+      <h2>Currently no movies in watchlist. Go add some!</h2>
+    ) : (
+      <h2 className="watchlist-header">Your watchlist: </h2>
+    );
+  }
   render() {
     return (
       <div className="watchlist">
-        <h2 className="watchlist-header">Your watchlist:</h2>
+        {this.watchListHeader()}
         <ul className="watchlist-content">
           {this.props.watchlist.map(movie => {
-            console.log(movie.onWatchlist);
             return (
               <li
                 className="watchlist-movie"
@@ -16,10 +24,6 @@ export class WatchList extends Component {
                 }}
               >
                 <img src={movie.posterTiny} alt="" />
-                {/* <div>
-                  <h4>{movie.title}</h4>
-                  <p>{movie.release}</p>
-                </div> */}
               </li>
             );
           })}

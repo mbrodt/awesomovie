@@ -24,37 +24,3 @@ h3 {
   margin: 0 auto;
   text-align: center;
 }
-
-.movie-container {
-  margin: 0 auto;
-  max-width: 1200px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin-top: 50px;
-  padding-top: 35px;
-  border-top: 2px solid #61efa7;
-  grid-row-gap: 10px;
-}
-
-.watchlist-header {
-  text-align: left;
-}
-
-.watchlist {
-  margin: 0 auto;
-  max-width: 1200px;
-  list-style: none;
-}
-
-.watchlist-content {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* .watchlist-movie {
-  display: flex;
-}
-
-.watchlist-movie h4 {
-  margin: 0;
-} */
