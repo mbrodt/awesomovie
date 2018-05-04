@@ -119,6 +119,7 @@ class App extends Component {
             description: movie.overview,
             release: movie.release_date,
             rating: movie.vote_average,
+            posterTiny: "https://image.tmdb.org/t/p/w92" + movie.poster_path,
             posterSmall: "https://image.tmdb.org/t/p/w185" + movie.poster_path,
             posterLarge: "https://image.tmdb.org/t/p/w342" + movie.poster_path,
             genres: genres,
@@ -138,18 +139,43 @@ class App extends Component {
 
   render() {
     let error = this.state.errorState ? (
-      <h1>Please search for a movie!</h1>
+      <h1>Please search for a movie or category</h1>
     ) : (
-      <div className="movie-container">
-        {this.state.movies.map((movie, idx) => {
-          return (
-            <Movie
-              key={idx}
-              movie={movie}
-              updateWatchlist={this.updateWatchlist}
-            />
-          );
-        })}
+      <div>
+        {/* <h2>Displaying results for {this.state.searchTerm}</h2> */}
+        <div className="watchlist">
+          <h2 className="watchlist-header">Your watchlist:</h2>
+          <ul className="watchlist-content">
+            {this.state.watchlist.map(movie => {
+              console.log(movie.onWatchlist);
+              return (
+                <li
+                  className="watchlist-movie"
+                  onClick={() => {
+                    this.removeFromWatchList(movie);
+                  }}
+                >
+                  <img src={movie.posterTiny} alt="" />
+                  {/* <div>
+                    <h4>{movie.title}</h4>
+                    <p>{movie.release}</p>
+                  </div> */}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className="movie-container">
+          {this.state.movies.map((movie, idx) => {
+            return (
+              <Movie
+                key={idx}
+                movie={movie}
+                updateWatchlist={this.updateWatchlist}
+              />
+            );
+          })}
+        </div>
       </div>
     );
     return (

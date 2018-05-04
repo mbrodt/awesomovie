@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Header.css";
 
-export class Input extends Component {
+export class Header extends Component {
   render() {
     return (
       <div className="box">
@@ -24,7 +24,7 @@ export class Input extends Component {
               Find movies!
             </button>
           </div>
-          <div className="watchlist">
+          {/* <div className="watchlist">
             <ul>
               {this.props.watchlist.map(movie => {
                 console.log(movie.onWatchlist);
@@ -39,11 +39,11 @@ export class Input extends Component {
                 );
               })}
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     );
   }
 }
 
-export default Input;
+export default Header;
