@@ -4,8 +4,6 @@ import "./MovieList.css";
 
 export class MovieList extends Component {
   add(movie) {
-    console.log("add");
-    console.log("movie: ", movie);
     this.props.addToWatchList(movie);
   }
   render() {

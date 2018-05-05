@@ -2,7 +2,6 @@ import React, { Component } from "react";
 // import _ from "lodash";
 import "./App.css";
 import Header from "./components/Header";
-import Movie from "./components/Movie";
 import { WatchList } from "./components/WatchList";
 import { MovieList } from "./components/MovieList";
 
@@ -15,7 +14,7 @@ class App extends Component {
       movies: [],
       genres: [],
       watchlist: [],
-      errorState: false
+      error: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
@@ -49,6 +48,7 @@ class App extends Component {
   }
 
   saveToLocalStorage() {
+    // Wait 200ms because setState is async and we want to make sure it has finished before we put the changes in localstorage
     setTimeout(() => {
       localStorage.setItem("watchlist", JSON.stringify(this.state.watchlist));
     }, 200);
@@ -56,12 +56,12 @@ class App extends Component {
 
   resetState() {
     this.setState({
-      errorState: false,
+      error: false,
       movies: []
     });
     if (this.state.searchTerm === "") {
       this.setState({
-        errorState: true
+        error: true
       });
     }
   }
@@ -143,20 +143,21 @@ class App extends Component {
   }
 
   render() {
-    let error = this.state.errorState ? (
-      <h1>Please search for a movie or category</h1>
-    ) : (
-      <div>
-        <WatchList
-          watchlist={this.state.watchlist}
-          removeFromWatchList={this.removeFromWatchList}
-        />
-        <MovieList
-          movies={this.state.movies}
-          addToWatchList={this.addToWatchList}
-        />
-      </div>
-    );
+    let error = this.state.error;
+    // let error = this.state.error ? (
+    //   <h1>Please search for a movie or category</h1>
+    // ) : (
+    //   <div>
+    //     <WatchList
+    //       watchlist={this.state.watchlist}
+    //       removeFromWatchList={this.removeFromWatchList}
+    //     />
+    //     <MovieList
+    //       movies={this.state.movies}
+    //       addToWatchList={this.addToWatchList}
+    //     />
+    //   </div>
+    // );
     return (
       <div className="App">
         <Header
@@ -166,7 +167,15 @@ class App extends Component {
           watchlist={this.state.watchlist}
           removewatch={this.removeFromWatchList}
         />{" "}
-        {error}
+        {error && <h1>Please search for a movie or category</h1>}
+        <WatchList
+          watchlist={this.state.watchlist}
+          removeFromWatchList={this.removeFromWatchList}
+        />
+        <MovieList
+          movies={this.state.movies}
+          addToWatchList={this.addToWatchList}
+        />
       </div>
     );
   }

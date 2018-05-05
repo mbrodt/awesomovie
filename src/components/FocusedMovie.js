@@ -23,7 +23,11 @@ export class FocusedMovie extends Component {
             <p>{this.props.movie.description}</p>
             <div className="genres">
               {this.props.movie.genres.map((genre, idx) => {
-                return <div className="genre-card">{genre + " "}</div>;
+                return (
+                  <div key={idx} className="genre-card">
+                    {genre + " "}
+                  </div>
+                );
               })}
             </div>
             <button className="watchlist-btn" onClick={this.props.addToWL}>
