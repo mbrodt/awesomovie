@@ -33,6 +33,7 @@ class Movie extends Component {
 
   render() {
     let focused = this.state.isActive;
+    // Prevents the body from scrolling when a movie is in focus
     if (focused) {
       document.body.style.overflow = "hidden";
     } else {

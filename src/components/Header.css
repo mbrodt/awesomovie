@@ -9,8 +9,6 @@
   margin: 0 auto;
   padding: 0px;
   margin: 0px;
-  background: #44a08d;
-  /* fallback for old browsers */
   background: linear-gradient( to right, #093637, #44a08d);
   box-shadow: 0px 1px 30px black;
   margin: 10px;

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./WatchList.css";
 
 export class WatchList extends Component {
+  // This method figures out if there are any movies on the watchlist currently.
+  // If not, tell the user to add some. If yes, display an SVG and some text.
   watchListHeader() {
     let isEmpty = this.props.watchlist.length === 0;
     return isEmpty ? (
@@ -39,6 +41,7 @@ export class WatchList extends Component {
       <div className="watchlist">
         {this.watchListHeader()}
         <ul className="watchlist-content">
+          {/* Loop over each item in the watchlist and display their poster in a list item */}
           {this.props.watchlist.map((movie, idx) => {
             return (
               <li

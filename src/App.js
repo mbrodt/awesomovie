@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-// import _ from "lodash";
 import "./App.css";
 import Header from "./components/Header";
-import { WatchList } from "./components/WatchList";
-import { MovieList } from "./components/MovieList";
+import WatchList from "./components/WatchList";
+import MovieList from "./components/MovieList";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: "action",
+      searchTerm: "",
       loading: false,
       movies: [],
       genres: [],
@@ -22,7 +21,6 @@ class App extends Component {
     this.getMovies = this.getMovies.bind(this);
     this.addToWatchList = this.addToWatchList.bind(this);
     this.toggleLoading = this.toggleLoading.bind(this);
-    this.speechToText = this.speechToText.bind(this);
   }
 
   handleChange(e) {
@@ -75,6 +73,7 @@ class App extends Component {
     }));
   }
 
+  // Figure out if the user is searching by genre or not.
   searchByGenre() {
     let genre_id = "";
     let findByGenre = false;
@@ -87,6 +86,8 @@ class App extends Component {
     return { findByGenre: findByGenre, genre_id: genre_id };
   }
 
+  // Prepare the URL that the app will fetch movies from.
+  // The URL is different if we're searching by genre.
   setupUrl() {
     let { findByGenre, genre_id } = this.searchByGenre();
     const api_key = "api_key=394ba4836fb2f67bf883e42b3463c4d9";
@@ -101,13 +102,6 @@ class App extends Component {
       url = `${base_url}${search}${api_key}${query}`;
     }
     return url;
-  }
-
-  getMovies() {
-    this.resetState();
-    if (this.state.searchTerm === "") return;
-    let url = this.setupUrl();
-    this.fetchData(url);
   }
 
   fetchData(url) {
@@ -127,6 +121,14 @@ class App extends Component {
         });
         this.postFetchUpdateState(movies);
       });
+  }
+
+  // Calls the different methods to reset state, setup a URL to query and go fetch the data.
+  getMovies() {
+    this.resetState();
+    if (this.state.searchTerm === "") return;
+    let url = this.setupUrl();
+    this.fetchData(url);
   }
 
   createMovie(movie, genres) {
@@ -180,46 +182,15 @@ class App extends Component {
     if (e.code === "Enter") this.getMovies();
   }
 
-  // Only for Chrome
-  speechToText(e) {
-    const transcript = Array.from(e.results)
-      .map(result => result[0])
-      .map(result => result.transcript)
-      .join("");
-    if (e.results[0].isFinal) {
-      console.log("is final: " + transcript);
-      this.setState({
-        searchTerm: transcript
-      });
-      this.getMovies();
-    }
-  }
-
-  // Only for Chrome
-  setupSpeech() {
-    var SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    var recognition = new SpeechRecognition();
-    recognition.addEventListener("result", this.speechToText);
-    recognition.addEventListener("end", recognition.start);
-    recognition.interimResults = true; // save the recorded words while talking
-    recognition.start();
-  }
-
   componentDidMount() {
+    // Fetch watchlist from localstorage if it exists; otherwise, use an empty array.
     let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
     this.setState({
       watchlist: watchlist
     });
-    // Speech detection only works in Chrome, and prevents loading in all other browsers.
-    // So we only enable the speech recognition if the browser is chrome; otherwise we leave it off.
-    var isChrome = !!window.chrome && !!window.chrome.webstore;
-    if (isChrome) {
-      this.setupSpeech();
-    }
-
     const input = document.querySelector("#main-input");
     input.addEventListener("keyup", this.handleEnter);
+    // Fetch the genres as soon as the app launches, so we have them when checking if the user is searching for a genre or not.
     const genreUrl =
       "https://api.themoviedb.org/3/genre/movie/list?api_key=394ba4836fb2f67bf883e42b3463c4d9";
     fetch(genreUrl)

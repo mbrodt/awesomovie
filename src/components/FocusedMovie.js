@@ -10,7 +10,6 @@ export class FocusedMovie extends Component {
         <div className="focused-movie">
           <img src={this.props.movie.posterLarge} alt="" />
           <div className="focused-content">
-            {/* <div> */}
             <h2>{this.props.movie.title}</h2>
             <p>{this.props.movie.release}</p>
             <div>
@@ -26,7 +25,7 @@ export class FocusedMovie extends Component {
               {this.props.movie.genres.map((genre, idx) => {
                 return (
                   <div key={idx} className="genre-card">
-                    {genre + " "}
+                    {genre}
                   </div>
                 );
               })}

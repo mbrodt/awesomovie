@@ -1,20 +1,18 @@
 .focused-movie {
     display: flex;
     max-width: 700px;
-    /* height: 500px; */
     background-color: white;
     color: var(--black);
 }
 
 .focused-movie img {
-    object-fit: cover;
+    width: 100%;
 }
 
 .focused-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* border: 5px solid goldenrod; */
     margin: 20px;
     text-align: left;
 }
@@ -29,5 +27,9 @@
         height: 500px;
         flex-direction: column;
         overflow-y: auto;
+    }
+    .focused-content {
+        display: block;
+        /* Needed, or the "Add to watchlist" button half disappears on mobile */
     }
 }
