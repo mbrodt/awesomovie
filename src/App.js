@@ -180,6 +180,7 @@ class App extends Component {
     if (e.code === "Enter") this.getMovies();
   }
 
+  // Only for Chrome
   speechToText(e) {
     const transcript = Array.from(e.results)
       .map(result => result[0])
@@ -194,6 +195,7 @@ class App extends Component {
     }
   }
 
+  // Only for Chrome
   setupSpeech() {
     var SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -209,9 +211,12 @@ class App extends Component {
     this.setState({
       watchlist: watchlist
     });
-    // var SpeechRecognition =
-    //   window.SpeechRecognition || window.webkitSpeechRecognition;
-    this.setupSpeech();
+    // Speech detection only works in Chrome, and prevents loading in all other browsers.
+    // So we only enable the speech recognition if the browser is chrome; otherwise we leave it off.
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+    if (isChrome) {
+      this.setupSpeech();
+    }
 
     const input = document.querySelector("#main-input");
     input.addEventListener("keyup", this.handleEnter);
