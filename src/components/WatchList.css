@@ -19,8 +19,11 @@
 }
 
 .watchlist-movie {
-  margin-right: 20px;
+  margin: 10px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1200px) {
+  .watchlist {
+    margin: 30px;
+  }
 }

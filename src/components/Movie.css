@@ -12,32 +12,6 @@
   align-items: center;
 }
 
-.focused-movie {
-  display: flex;
-  max-width: 700px;
-  /* height: 500px; */
-  background-color: white;
-
-  color: var(--black);
-}
-
-.focused-movie img {
-  object-fit: cover;
-}
-
-.focused-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  /* border: 5px solid goldenrod; */
-  margin: 20px;
-  text-align: left;
-}
-
-.focused-content h2 {
-  margin: 0;
-}
-
 .genres {
   /* display: flex;
   flex-wrap: wrap; */
@@ -65,15 +39,10 @@
   padding: 10px;
   border: none;
   color: white;
-  /* margin: 10px 5px; */
-  /* margin-top: 30px; */
 }
 
 @media screen and (max-width: 700px) {
-  .focused-movie {
-    max-width: 80%;
-    height: 500px;
-    flex-direction: column;
-    overflow-y: auto;
+  .watchlist-btn {
+    margin-bottom: 20px;
   }
 }

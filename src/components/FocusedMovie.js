@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Rater from "react-rater";
 import "react-rater/lib/react-rater.css";
+import "./FocusedMovie.css";
 
 export class FocusedMovie extends Component {
   render() {

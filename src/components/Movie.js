@@ -11,12 +11,11 @@ class Movie extends Component {
     };
     this.toggleFocus = this.toggleFocus.bind(this);
     this.addToWL = this.addToWL.bind(this);
-    // console.log("in construct ", this.props.addToWatchlist());
   }
   toggleFocus(e) {
-    let test = e.target.classList;
+    let clickedOn = e.target.classList;
     // Check if user clicked on the black background "wrapper" div or the watchlist button. If yes, remove focus. Otherwise, add focus.
-    test.contains("wrapper") || test.contains("watchlist-btn")
+    clickedOn.contains("wrapper") || clickedOn.contains("watchlist-btn")
       ? this.setState({
           isActive: false
         })
@@ -34,11 +33,15 @@ class Movie extends Component {
 
   render() {
     let focused = this.state.isActive;
+    if (focused) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
     return (
       <div>
         {focused && (
           <FocusedMovie
-            // key={this.props.idx}
             movie={this.props.movie}
             toggleFocus={this.toggleFocus}
             addToWL={this.addToWL}

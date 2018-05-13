@@ -10,7 +10,7 @@ class App extends Component {
     super();
     this.state = {
       searchTerm: "action",
-      loadingMovies: false,
+      loading: false,
       movies: [],
       genres: [],
       watchlist: [],
@@ -21,6 +21,8 @@ class App extends Component {
     this.removeFromWatchList = this.removeFromWatchList.bind(this);
     this.getMovies = this.getMovies.bind(this);
     this.addToWatchList = this.addToWatchList.bind(this);
+    this.toggleLoading = this.toggleLoading.bind(this);
+    this.speechToText = this.speechToText.bind(this);
   }
 
   handleChange(e) {
@@ -40,6 +42,7 @@ class App extends Component {
   removeFromWatchList(movie) {
     let arr = [...this.state.watchlist];
     let index = arr.indexOf(movie);
+    // Find the index of the movie in the array, and remove it
     arr.splice(index, 1);
     this.setState({
       watchlist: arr
@@ -64,6 +67,12 @@ class App extends Component {
         error: true
       });
     }
+  }
+
+  toggleLoading() {
+    this.setState(prevState => ({
+      loading: !prevState.loading
+    }));
   }
 
   searchByGenre() {
@@ -102,6 +111,7 @@ class App extends Component {
   }
 
   fetchData(url) {
+    this.toggleLoading();
     fetch(url)
       .then(res => res.json())
       .then(json => {
@@ -122,7 +132,6 @@ class App extends Component {
   createMovie(movie, genres) {
     return {
       title: movie.original_title,
-      // runtime: json.runtime,
       description: movie.overview,
       release: movie.release_date,
       rating: movie.vote_average,
@@ -140,24 +149,11 @@ class App extends Component {
       movies: [...prevState.movies, ...movies],
       searchTerm: ""
     }));
+    this.toggleLoading();
   }
 
   render() {
     let error = this.state.error;
-    // let error = this.state.error ? (
-    //   <h1>Please search for a movie or category</h1>
-    // ) : (
-    //   <div>
-    //     <WatchList
-    //       watchlist={this.state.watchlist}
-    //       removeFromWatchList={this.removeFromWatchList}
-    //     />
-    //     <MovieList
-    //       movies={this.state.movies}
-    //       addToWatchList={this.addToWatchList}
-    //     />
-    //   </div>
-    // );
     return (
       <div className="App">
         <Header
@@ -167,7 +163,7 @@ class App extends Component {
           watchlist={this.state.watchlist}
           removewatch={this.removeFromWatchList}
         />{" "}
-        {error && <h1>Please search for a movie or category</h1>}
+        {error && <h2>Please search for a movie or category</h2>}
         <WatchList
           watchlist={this.state.watchlist}
           removeFromWatchList={this.removeFromWatchList}
@@ -175,6 +171,7 @@ class App extends Component {
         <MovieList
           movies={this.state.movies}
           addToWatchList={this.addToWatchList}
+          loading={this.state.loading}
         />
       </div>
     );
@@ -183,18 +180,39 @@ class App extends Component {
     if (e.code === "Enter") this.getMovies();
   }
 
+  speechToText(e) {
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join("");
+    if (e.results[0].isFinal) {
+      console.log("is final: " + transcript);
+      this.setState({
+        searchTerm: transcript
+      });
+      this.getMovies();
+    }
+  }
+
+  setupSpeech() {
+    var SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    var recognition = new SpeechRecognition();
+    recognition.addEventListener("result", this.speechToText);
+    recognition.addEventListener("end", recognition.start);
+    recognition.interimResults = true; // save the recorded words while talking
+    recognition.start();
+  }
+
   componentDidMount() {
-    // const cachedHits = localStorage.getItem("watchlist");
-    // if (cachedHits) {
-    //   let watchlist = JSON.parse(localStorage.getItem("watchlist"));
-    //   this.setState(prevState => ({
-    //     watchlist: [...prevState.watchlist, ...watchlist]
-    //   }));
-    // }
     let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
     this.setState({
       watchlist: watchlist
     });
+    // var SpeechRecognition =
+    //   window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.setupSpeech();
+
     const input = document.querySelector("#main-input");
     input.addEventListener("keyup", this.handleEnter);
     const genreUrl =

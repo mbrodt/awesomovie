@@ -9,20 +9,15 @@
   margin: 0 auto;
   padding: 0px;
   margin: 0px;
-  background: #44a08d; /* fallback for old browsers */
-  background: linear-gradient(
-    to right,
-    #093637,
-    #44a08d
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background: #44a08d;
+  /* fallback for old browsers */
+  background: linear-gradient( to right, #093637, #44a08d);
   box-shadow: 0px 1px 30px black;
-  /* position: relative; */
-  /* overflow: hidden; */
   margin: 10px;
 }
+
 #main-input {
-  width: 300px;
+  max-width: 250px;
   height: 40px;
   font-size: 20px;
   padding: 0.8rem 1rem !important;
@@ -36,15 +31,18 @@
   border-bottom-right-radius: 0;
   margin-top: 30px;
 }
+
 #main-input:hover {
   box-shadow: 0 10px 30px -2px rgba(0, 0, 0, 0.3);
   z-index: 0;
 }
+
 #main-input:focus {
   z-index: 0;
   background: rgba(0, 0, 0, 0.3);
   color: white;
 }
+
 #search-btn {
   margin: 30px auto;
   display: block;
@@ -59,6 +57,7 @@
   font-weight: 500;
   box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.3);
 }
+
 #search-btn:hover {
   transform: translateY(-1px);
 }
